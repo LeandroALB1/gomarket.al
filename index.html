@@ -5,6 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>GoMarket - Rrit biznesin tënd në Shqipëri</title>
 <meta name="description" content="GoMarket është tregu modern ku bizneset shqiptare rriten, listojnë produktet dhe arrijnë më shumë klientë. Bashkohu me listën e pritjes." />
+<meta name="theme-color" content="#127a4a" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="GoMarket - Rrit biznesin tënd në Shqipëri" />
+<meta property="og:description" content="Tregu modern ku bizneset shqiptare shesin online dhe rriten. Bashkohu me listën e pritjes." />
+<meta property="og:locale" content="sq_AL" />
+<meta name="twitter:card" content="summary" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='6' fill='%23127a4a'/%3E%3Cpath d='M5 7h13l-1.2 7H7z' fill='none' stroke='%23fff' stroke-width='1.6' stroke-linejoin='round'/%3E%3Ccircle cx='9' cy='18.5' r='1.2' fill='%23fff'/%3E%3Ccircle cx='15' cy='18.5' r='1.2' fill='%23fff'/%3E%3C/svg%3E" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Hanken+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
@@ -38,11 +45,13 @@
   }
   @keyframes bgshift{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
   h1,h2,h3,.brand{font-family:'Bricolage Grotesque','Hanken Grotesk',sans-serif;letter-spacing:-.02em}
+  h1,h2,h3{text-wrap:balance}
+  .hero p.lead,.sec-sub,.feature p,.step p,.join-inner p{text-wrap:pretty}
   a{color:inherit;text-decoration:none}
   svg.i{width:1.05em;height:1.05em;vertical-align:-.16em;display:inline-block;flex:0 0 auto}
   .float-badge .ic svg.i,.feature .ic svg.i{width:auto;height:auto;vertical-align:0}
   .wrap{max-width:1180px;margin:0 auto;padding:0 24px}
-  .green{color:var(--green-600)}
+  .green{color:var(--green-700)}
 
   /* ===== animated background ===== */
   .bg-orbs{position:fixed;inset:0;z-index:-1;overflow:hidden;pointer-events:none}
@@ -64,12 +73,15 @@
   @keyframes float{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(40px,-40px) scale(1.08)}66%{transform:translate(-30px,30px) scale(.95)}}
 
   /* ===== scroll progress bar ===== */
-  .scroll-progress{position:fixed;top:0;left:0;height:3px;width:0;z-index:60;background:linear-gradient(90deg,var(--green-400),var(--green-600),var(--green-700));box-shadow:0 0 12px var(--ring);transition:width .08s linear}
+  .scroll-progress{position:fixed;top:0;left:0;height:3px;width:100%;transform:scaleX(0);transform-origin:left;z-index:60;background:linear-gradient(90deg,var(--green-400),var(--green-600),var(--green-700));box-shadow:0 0 12px var(--ring);transition:transform .08s linear;will-change:transform}
 
   @media(prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto}
     body{animation:none}
-    .aurora,.orb{animation:none}
+    .aurora,.orb,.phone,.float-badge,.logo,.pill .dot,.card-mini,.marquee .track{animation:none}
     .orb-layer{transform:none!important}
+    .phone{transform:rotate(-3deg)!important}
+    .reveal{opacity:1!important;transform:none!important;transition:none!important}
   }
 
   /* ===== nav ===== */
@@ -81,13 +93,42 @@
   @keyframes pop{0%{transform:scale(.6);opacity:0}100%{transform:scale(1);opacity:1}}
   .nav-links{display:flex;align-items:center;gap:28px;font-weight:600;font-size:15px}
   .nav-links a{color:var(--ink-soft);transition:color .2s}
-  .nav-links a:hover{color:var(--green-600)}
+  .nav-links a:hover{color:var(--green-700)}
   .btn{cursor:pointer;border:0;font-family:inherit;font-weight:700;border-radius:999px;padding:13px 24px;font-size:15px;transition:transform .15s ease,box-shadow .25s ease,background .25s}
   .btn-primary{background:linear-gradient(135deg,var(--green-500),var(--green-700));color:#fff;box-shadow:0 12px 28px -10px var(--ring)}
   .btn-primary:hover{transform:translateY(-2px);box-shadow:0 18px 36px -10px var(--ring)}
   .btn-ghost{background:var(--mint);color:var(--green-700)}
   .btn-ghost:hover{background:var(--mint-2);transform:translateY(-2px)}
-  @media(max-width:760px){.nav-links{display:none}}
+  .btn:active{transform:translateY(0)}
+  .btn:disabled{opacity:.6;cursor:not-allowed}
+  .btn:disabled:hover{transform:none}
+  /* anchor targets clear the sticky header */
+  section[id]{scroll-margin-top:88px}
+  /* touch devices: no lingering hover state after tap */
+  @media(hover:none){
+    .feature:hover{transform:none;box-shadow:none;border-color:#eef3f0}
+    .btn-primary:hover{transform:none;box-shadow:0 12px 28px -10px var(--ring)}
+    .btn-ghost:hover{transform:none;background:var(--mint)}
+  }
+
+  /* ===== mobile nav ===== */
+  .nav-toggle{display:none;width:44px;height:44px;border:0;cursor:pointer;background:var(--mint);color:var(--green-700);border-radius:12px;place-items:center;transition:background .2s}
+  .nav-toggle:hover{background:var(--mint-2)}
+  .nav-toggle svg{width:24px;height:24px}
+  .nav-toggle .ic-close{display:none}
+  .nav-toggle[aria-expanded="true"] .ic-open{display:none}
+  .nav-toggle[aria-expanded="true"] .ic-close{display:block}
+  .mobile-menu{display:flex;flex-direction:column;gap:2px;padding:6px 0 14px}
+  .mobile-menu[hidden]{display:none}
+  .mobile-menu:not([hidden]){animation:menuIn .22s cubic-bezier(.2,.7,.2,1)}
+  @keyframes menuIn{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
+  .mobile-menu a{display:flex;align-items:center;min-height:44px;padding:10px 12px;font-weight:600;font-size:16px;color:var(--ink-soft);border-radius:12px}
+  .mobile-menu a:hover,.mobile-menu a:focus-visible{color:var(--green-700);background:var(--mint)}
+  .mobile-menu .mm-cta{padding:8px 0 0}
+  .mobile-menu .mm-cta button{width:100%}
+  @media(min-width:761px){.mobile-menu{display:none!important}.nav-toggle{display:none!important}}
+  @media(max-width:760px){.nav-links{display:none}.nav-toggle{display:inline-grid}.nav-cta{display:none}}
+  @media(prefers-reduced-motion:reduce){.mobile-menu:not([hidden]){animation:none}}
 
   /* ===== hero ===== */
   .hero{position:relative;padding:72px 0 56px}
@@ -97,7 +138,7 @@
   .pill .dot{width:8px;height:8px;border-radius:50%;background:var(--green-500);animation:blink 1.6s infinite}
   @keyframes blink{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.7)}}
   .hero h1{font-size:clamp(38px,6vw,68px);line-height:1.02;font-weight:800}
-  .hero h1 .grad{background:linear-gradient(120deg,var(--green-500),var(--green-700));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .hero h1 .grad{color:var(--green-700)}
   .hero p.lead{font-size:clamp(17px,2.2vw,21px);color:var(--ink-soft);margin:22px 0 30px;max-width:540px}
   .hero-cta{display:flex;gap:14px;flex-wrap:wrap}
   .trust{display:flex;align-items:center;gap:14px;margin-top:26px;color:var(--ink-soft);font-size:14px;font-weight:600}
@@ -146,7 +187,7 @@
 
   /* ===== sections ===== */
   section.block{padding:90px 0}
-  .eyebrow{color:var(--green-600);font-weight:800;letter-spacing:.08em;text-transform:uppercase;font-size:13px;text-align:center}
+  .eyebrow{color:var(--green-700);font-weight:800;letter-spacing:.08em;text-transform:uppercase;font-size:13px;text-align:center}
   .sec-title{font-size:clamp(28px,4.4vw,46px);font-weight:800;text-align:center;margin:12px auto 14px;max-width:760px}
   .sec-sub{text-align:center;color:var(--ink-soft);max-width:620px;margin:0 auto 54px;font-size:17px}
 
@@ -163,7 +204,7 @@
   .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;counter-reset:step}
   @media(max-width:880px){.steps{grid-template-columns:1fr}}
   .step{position:relative;background:linear-gradient(180deg,#fff,#f6fdf9);border:1px solid #eef3f0;border-radius:var(--radius);padding:32px 28px}
-  .step .num{counter-increment:step;font-family:'Bricolage Grotesque';font-weight:800;font-size:44px;background:linear-gradient(135deg,var(--green-400),var(--green-700));-webkit-background-clip:text;background-clip:text;color:transparent;line-height:1}
+  .step .num{counter-increment:step;font-family:'Bricolage Grotesque';font-weight:800;font-size:44px;color:var(--green-700);line-height:1}
   .step .num::before{content:"0" counter(step)}
   .step h3{margin:10px 0 8px;font-size:20px}
   .step p{color:var(--ink-soft);font-size:15px}
@@ -186,7 +227,7 @@
   form{display:flex;align-items:stretch;gap:10px;background:#fff;padding:8px;border-radius:999px;box-shadow:0 20px 40px -16px rgba(0,0,0,.4)}
   @media(max-width:560px){form{flex-direction:column;border-radius:24px}}
   form input{width:100%;border:0;outline:0;font-family:inherit;font-size:16px;padding:15px 20px;color:var(--ink);background:transparent;border-radius:999px}
-  form input::placeholder{color:#9bb0a6}
+  form input::placeholder{color:#5a7167}
   .form-row{display:flex;align-items:stretch;gap:10px;flex:1}
   @media(max-width:560px){.form-row{flex-direction:column}}
   .field{flex:1;display:flex;background:#f3f9f5;border-radius:999px}
@@ -199,22 +240,11 @@
   .success .check svg{width:32px;height:32px;stroke:#06351f;stroke-width:3}
   .count-tag{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.16);padding:8px 16px;border-radius:999px;font-weight:700;font-size:14px;margin-bottom:24px}
 
-  /* admin */
-  .admin-link{text-align:center;margin-top:24px}
-  .admin-link a{display:inline-block;line-height:1.4;font-size:13px;color:rgba(255,255,255,.85);font-weight:600;border-bottom:1px dashed rgba(142,240,182,.7);padding-bottom:2px;cursor:pointer;transition:color .2s}
-  .admin-link a:hover{color:#fff}
-  .modal{position:fixed;inset:0;background:rgba(8,30,22,.55);backdrop-filter:blur(4px);display:none;place-items:center;z-index:100;padding:20px}
-  .modal.show{display:grid}
-  .modal-box{background:#fff;border-radius:24px;max-width:680px;width:100%;max-height:82vh;overflow:auto;padding:30px;box-shadow:var(--shadow)}
-  .modal-box h3{font-size:22px;margin-bottom:4px}
-  .modal-box .sub{color:var(--ink-soft);font-size:14px;margin-bottom:18px}
-  table{width:100%;border-collapse:collapse;font-size:14px}
-  th,td{text-align:left;padding:10px 12px;border-bottom:1px solid #eef3f0}
-  th{color:var(--green-700);font-weight:700}
-  .modal-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:20px;flex-wrap:wrap}
-  .btn-sm{padding:10px 18px;font-size:14px}
-  .btn-danger{background:#fde7e7;color:#b42424}
-  .empty{text-align:center;color:var(--ink-soft);padding:30px}
+  /* form labels + errors */
+  .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+  form input:focus-visible{outline:2px solid var(--green-700);outline-offset:2px}
+  .field.invalid{box-shadow:0 0 0 2px #d6453f}
+  .form-error{margin-top:14px;color:#ffe1de;background:rgba(150,28,28,.4);border:1px solid rgba(255,190,186,.5);border-radius:14px;padding:11px 16px;font-size:14px;font-weight:600;text-align:center}
 
   /* footer */
   footer{background:var(--green-900);color:#cfe9dc;padding:54px 0 30px}
@@ -260,10 +290,6 @@
     .foot-grid{display:grid;grid-template-columns:1fr 1fr;gap:26px 20px}
     .foot-brand{grid-column:1 / -1;max-width:none}
     .foot-bottom{justify-content:center;text-align:center}
-    #adminTable{overflow-x:auto}
-    .modal-box{padding:24px 20px}
-    .modal-actions{justify-content:stretch}
-    .modal-actions .btn{flex:1}
   }
   @media(max-width:420px){
     .hero h1{font-size:33px}
@@ -274,6 +300,7 @@
     .pill{font-size:12px}
   }
 </style>
+<noscript><style>.reveal{opacity:1!important;transform:none!important}</style></noscript>
 </head>
 <body>
 
@@ -302,8 +329,19 @@
         <a href="#stats">Pse GoMarket</a>
         <a href="#join">Lista e pritjes</a>
       </div>
-      <a href="#join"><button class="btn btn-primary">Bashkohu në listë</button></a>
+      <a href="#join" class="nav-cta"><button class="btn btn-primary">Bashkohu në listë</button></a>
+      <button class="nav-toggle" id="navToggle" aria-label="Hap menynë" aria-expanded="false" aria-controls="mobileMenu">
+        <svg class="ic-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+        <svg class="ic-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
     </nav>
+    <div class="mobile-menu" id="mobileMenu" hidden>
+      <a href="#features">Veçoritë</a>
+      <a href="#how">Si funksionon</a>
+      <a href="#stats">Pse GoMarket</a>
+      <a href="#join">Lista e pritjes</a>
+      <a href="#join" class="mm-cta"><button class="btn btn-primary">Bashkohu në listë</button></a>
+    </div>
   </div>
 </header>
 
@@ -319,14 +357,14 @@
         <a href="#how"><button class="btn btn-ghost">Shiko si funksionon</button></a>
       </div>
       <div class="trust reveal d4">
-        <div class="avatars"><span>A</span><span>B</span><span>D</span><span>E</span></div>
-        <span><strong id="trustCount">0</strong> biznese tashmë në pritje për t'u bashkuar</span>
+        <div class="avatars" aria-hidden="true"><span>A</span><span>B</span><span>D</span><span>E</span></div>
+        <span>Bëhu nga bizneset e para që hapin dyqan në GoMarket.</span>
       </div>
     </div>
 
-    <div class="mock reveal d2">
-      <div class="float-badge fb1"><span class="ic"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#127a4a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l6-6 4 4 7-8"/><path d="M21 7v5h-5"/></svg></span> Shitjet +38% këtë javë</div>
-      <div class="float-badge fb2"><span class="ic"><svg viewBox="0 0 24 24" width="18" height="18" fill="#127a4a" stroke="#127a4a" stroke-width="1.5" stroke-linejoin="round"><path d="M12 2l2.9 6.3 6.8.7-5 4.6 1.4 6.7L12 17.8 5.9 20.3 7.3 13.6 2.3 9l6.8-.7z"/></svg></span> Vlerësim i ri 5.0</div>
+    <div class="mock reveal d2" aria-hidden="true">
+      <div class="float-badge fb1"><span class="ic"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#127a4a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l6-6 4 4 7-8"/><path d="M21 7v5h-5"/></svg></span> Ndiq shitjet me një vështrim</div>
+      <div class="float-badge fb2"><span class="ic"><svg viewBox="0 0 24 24" width="18" height="18" fill="#127a4a" stroke="#127a4a" stroke-width="1.5" stroke-linejoin="round"><path d="M12 2l2.9 6.3 6.8.7-5 4.6 1.4 6.7L12 17.8 5.9 20.3 7.3 13.6 2.3 9l6.8-.7z"/></svg></span> Vlerësime nga klientë realë</div>
       <div class="phone">
         <div class="notch"></div>
         <div class="screen">
@@ -350,7 +388,7 @@
 </section>
 
 <!-- MARQUEE -->
-<div class="marquee">
+<div class="marquee" aria-hidden="true">
   <div class="track">
     <span>✦ Modë &nbsp;✦ Elektronikë &nbsp;✦ Punë dore &nbsp;✦ Shtëpi &amp; Jetesë &nbsp;✦ Ushqime &amp; Pije &nbsp;✦ Bukuri &nbsp;✦ Dyqane Lokale &nbsp;✦ Shërbime &nbsp;</span>
     <span>✦ Modë &nbsp;✦ Elektronikë &nbsp;✦ Punë dore &nbsp;✦ Shtëpi &amp; Jetesë &nbsp;✦ Ushqime &amp; Pije &nbsp;✦ Bukuri &nbsp;✦ Dyqane Lokale &nbsp;✦ Shërbime &nbsp;</span>
@@ -415,10 +453,11 @@
 <!-- STATS -->
 <section class="block" id="stats">
   <div class="wrap">
+    <h2 class="sr-only">Pse GoMarket</h2>
     <div class="stats reveal">
       <div class="stat"><div class="n" data-count="2700000">0</div><div class="l">Njerëz online në Shqipëri</div></div>
-      <div class="stat"><div class="n" data-count="100">0</div><div class="l">% përvojë për celular</div></div>
-      <div class="stat"><div class="n" data-count="24">0</div><div class="l">Orë për të hapur dyqanin</div></div>
+      <div class="stat"><div class="n" data-count="100">0</div><div class="l">% ndërtuar për celular</div></div>
+      <div class="stat"><div class="n" data-count="8">0</div><div class="l">Kategori për të shitur</div></div>
       <div class="stat"><div class="n" data-count="0">0</div><div class="l">€ për të filluar</div></div>
     </div>
   </div>
@@ -429,18 +468,25 @@
   <div class="wrap">
     <div class="join-card reveal">
       <div class="join-inner">
-        <div class="count-tag"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2c2.5 1.5 4 4.5 4 8 0 2-.5 3.5-1 4.5H9c-.5-1-1-2.5-1-4.5 0-3.5 1.5-6.5 4-8z"/><circle cx="12" cy="9" r="1.6"/><path d="M9 14.5l-2.5 2c-.5.4-.5 1.4 0 3 1.6-.5 2.6-.5 3-1M15 14.5l2.5 2c.5.4.5 1.4 0 3-1.6-.5-2.6-.5-3-1"/><path d="M10.5 18.5c0 1.5.5 2.5 1.5 3.5 1-1 1.5-2 1.5-3.5"/></svg> <span id="liveCount">0</span> biznese në listën e pritjes</div>
+        <div class="count-tag"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2c2.5 1.5 4 4.5 4 8 0 2-.5 3.5-1 4.5H9c-.5-1-1-2.5-1-4.5 0-3.5 1.5-6.5 4-8z"/><circle cx="12" cy="9" r="1.6"/><path d="M9 14.5l-2.5 2c-.5.4-.5 1.4 0 3 1.6-.5 2.6-.5 3-1M15 14.5l2.5 2c.5.4.5 1.4 0 3-1.6-.5-2.6-.5-3-1"/><path d="M10.5 18.5c0 1.5.5 2.5 1.5 3.5 1-1 1.5-2 1.5-3.5"/></svg> Akses i hershëm + përfitime themeluesi</div>
         <h2>Bëhu i pari në GoMarket.</h2>
         <p>Bashkohu sot me listën e pritjes dhe përfito akses të hershëm, një vend të veçantë dhe përfitime themeluesi kur të nisim në Shqipëri.</p>
 
-        <form id="waitForm" novalidate>
+        <form id="waitForm" novalidate aria-describedby="formError">
           <input type="hidden" name="_subject" value="Regjistrim i ri në listën e GoMarket" />
           <div class="form-row">
-            <div class="field"><input type="text" id="name" name="name" placeholder="Emri ose dyqani yt" required /></div>
-            <div class="field"><input type="email" id="email" name="email" placeholder="Adresa email" required /></div>
+            <div class="field">
+              <label for="name" class="sr-only">Emri ose dyqani yt</label>
+              <input type="text" id="name" name="name" placeholder="Emri ose dyqani yt" autocomplete="name" maxlength="80" required aria-required="true" />
+            </div>
+            <div class="field">
+              <label for="email" class="sr-only">Adresa email</label>
+              <input type="email" id="email" name="email" placeholder="Adresa email" autocomplete="email" inputmode="email" maxlength="120" required aria-required="true" />
+            </div>
           </div>
           <button type="submit" class="btn btn-primary">Bashkohu tani</button>
         </form>
+        <p id="formError" class="form-error" role="alert" aria-live="assertive" hidden></p>
         <div class="form-note">Pa spam - do të të shkruajmë vetëm kur GoMarket të jetë gati. <svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V4s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg></div>
 
         <div class="success" id="success">
@@ -452,20 +498,6 @@
     </div>
   </div>
 </section>
-
-<!-- ADMIN MODAL -->
-<div class="modal" id="adminModal">
-  <div class="modal-box">
-    <h3>Regjistrimet në listën e pritjes</h3>
-    <div class="sub">Ruajtur në këtë pajisje. <span id="adminCount">0</span> gjithsej - eksporto në CSV për të ruajtur një kopje.</div>
-    <div id="adminTable"></div>
-    <div class="modal-actions">
-      <button class="btn btn-danger btn-sm" id="clearBtn">Pastro të gjitha</button>
-      <button class="btn btn-ghost btn-sm" id="exportBtn">Eksporto CSV</button>
-      <button class="btn btn-primary btn-sm" id="closeBtn">Mbyll</button>
-    </div>
-  </div>
-</div>
 
 <!-- FOOTER -->
 <footer>
@@ -490,11 +522,18 @@
 </footer>
 
 <script>
-  /* ---------- scroll reveal ---------- */
-  const io = new IntersectionObserver((entries)=>{
-    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
-  },{threshold:.15});
-  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+  /* ---------- scroll reveal (degrades to fully visible if unsupported) ---------- */
+  const revealEls = document.querySelectorAll('.reveal');
+  if('IntersectionObserver' in window){
+    const io = new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+    },{threshold:.15});
+    revealEls.forEach(el=>io.observe(el));
+    // safety net: if anything is still hidden after load, show it (hidden tabs, headless renders)
+    window.addEventListener('load',()=>setTimeout(()=>revealEls.forEach(el=>el.classList.add('in')),1200));
+  } else {
+    revealEls.forEach(el=>el.classList.add('in'));
+  }
 
   /* ---------- background parallax (scroll + mouse) & progress bar ---------- */
   (function(){
@@ -509,7 +548,7 @@
       const sy = window.scrollY;
       // progress bar
       const docH = document.documentElement.scrollHeight - window.innerHeight;
-      if(progress) progress.style.width = (docH > 0 ? (sy / docH) * 100 : 0) + '%';
+      if(progress) progress.style.transform = 'scaleX(' + (docH > 0 ? Math.min(sy / docH, 1) : 0) + ')';
       if(reduce) return;
       // orb layers drift with scroll + a touch of mouse
       layers.forEach(l=>{
@@ -536,142 +575,147 @@
   })();
 
   /* ---------- animated counters ---------- */
-  const fmt = n => n.toLocaleString('en-US');
-  const countIO = new IntersectionObserver((entries)=>{
-    entries.forEach(e=>{
-      if(!e.isIntersecting) return;
-      const el = e.target, target = +el.dataset.count, dur = 1600, start = performance.now();
-      const tick = now =>{
-        const p = Math.min((now-start)/dur,1);
-        const eased = 1-Math.pow(1-p,3);
-        el.textContent = fmt(Math.floor(target*eased));
-        if(p<1) requestAnimationFrame(tick); else el.textContent = fmt(target);
-      };
-      requestAnimationFrame(tick);
-      countIO.unobserve(el);
-    });
-  },{threshold:.5});
-  document.querySelectorAll('[data-count]').forEach(el=>countIO.observe(el));
-
-  /* ---------- waiting list (localStorage) ---------- */
-  const KEY = 'gomarket_waitlist';
-  const BASE = 312; // social-proof baseline added to the displayed count
-  const get = () => JSON.parse(localStorage.getItem(KEY) || '[]');
-  const save = list => localStorage.setItem(KEY, JSON.stringify(list));
-
-  function renderCounts(){
-    const total = get().length;
-    const shown = BASE + total;
-    const live = document.getElementById('liveCount'); if(live) live.textContent = fmt(shown);
-    const trust = document.getElementById('trustCount'); if(trust) trust.textContent = fmt(shown);
-    const ac = document.getElementById('adminCount'); if(ac) ac.textContent = total;
+  const fmt = n => n.toLocaleString('sq-AL');
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function runCount(el){
+    const target = +el.dataset.count;
+    if(reduceMotion){ el.textContent = fmt(target); return; }
+    const dur = 1600, start = performance.now();
+    const tick = now =>{
+      const p = Math.min((now-start)/dur,1);
+      const eased = 1-Math.pow(1-p,3);
+      el.textContent = fmt(Math.floor(target*eased));
+      if(p<1) requestAnimationFrame(tick); else el.textContent = fmt(target);
+    };
+    requestAnimationFrame(tick);
+  }
+  const countEls = document.querySelectorAll('[data-count]');
+  if('IntersectionObserver' in window){
+    const countIO = new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{ if(e.isIntersecting){ runCount(e.target); countIO.unobserve(e.target); } });
+    },{threshold:.5});
+    countEls.forEach(el=>countIO.observe(el));
+  } else {
+    countEls.forEach(el=>{ el.textContent = fmt(+el.dataset.count); });
   }
 
-  /* ===== BACKEND: Formspree =====
-     1. Create a free form at https://formspree.io  (verify your email once).
-     2. Copy your form's endpoint (looks like  https://formspree.io/f/abcdwxyz ).
-     3. Paste it below, replacing REPLACE_WITH_YOUR_ID.
-     Sign-ups will then arrive in your private Formspree dashboard + your inbox.
-     (Until you set this, sign-ups are still saved locally as a backup.) */
-  const FORMSPREE_ENDPOINT = 'https://formspree.io/f/REPLACE_WITH_YOUR_ID';
+  /* ---------- local backup of sign-ups (redundant to the backend) ---------- */
+  const KEY = 'gomarket_waitlist';
+  function get(){ try{ return JSON.parse(localStorage.getItem(KEY) || '[]'); }catch(e){ return []; } }
+  function save(list){ try{ localStorage.setItem(KEY, JSON.stringify(list)); }catch(e){ /* private mode / quota — backup is best-effort */ } }
+
+  /* ===== BACKEND =====
+     Paste your form endpoint below (Formspree / Getform / Basin / Netlify function, etc).
+     It must accept a POST of FormData and return 2xx on success.
+     Sign-ups then arrive in your provider's dashboard + inbox. A local copy is kept
+     as a redundant backup, but the endpoint is the source of truth. */
+  const ENDPOINT = 'https://formspree.io/f/mpqgrbkn';
 
   const form = document.getElementById('waitForm');
+  const errEl = document.getElementById('formError');
+  const nameEl = document.getElementById('name');
+  const emailEl = document.getElementById('email');
+  const fieldOf = el => el.closest('.field');
+
+  function clearErrors(){
+    errEl.hidden = true; errEl.textContent = '';
+    [nameEl, emailEl].forEach(el=>{ fieldOf(el).classList.remove('invalid'); el.removeAttribute('aria-invalid'); });
+  }
+  function fieldError(el, msg){
+    fieldOf(el).classList.add('invalid');
+    el.setAttribute('aria-invalid', 'true');
+    errEl.textContent = msg; errEl.hidden = false;
+    el.focus();
+  }
+  // clear a field's error as soon as the user edits it
+  [nameEl, emailEl].forEach(el=>el.addEventListener('input', ()=>{
+    fieldOf(el).classList.remove('invalid'); el.removeAttribute('aria-invalid');
+    if(!errEl.hidden){ errEl.hidden = true; errEl.textContent = ''; }
+  }));
+
   function showSuccess(){
     form.style.display = 'none';
+    errEl.hidden = true;
     document.getElementById('success').classList.add('show');
-    renderCounts();
   }
 
+  let submitting = false;
   form.addEventListener('submit', async ev=>{
     ev.preventDefault();
-    const name = document.getElementById('name').value.trim();
-    const email = document.getElementById('email').value.trim();
-    const okEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-    if(!name){ document.getElementById('name').focus(); return; }
-    if(!okEmail){ document.getElementById('email').focus(); document.getElementById('email').style.boxShadow='0 0 0 2px #e8b4b4'; return; }
+    if(submitting) return;            // guard against double-submit
+    clearErrors();
 
-    // local backup so a sign-up is never lost
-    const list = get();
-    if(!list.some(p=>p.email.toLowerCase()===email.toLowerCase())){
-      list.push({name, email, date:new Date().toISOString()});
-      save(list);
-    }
+    const name = nameEl.value.trim();
+    const email = emailEl.value.trim();
+    if(!name){ fieldError(nameEl, 'Shkruaj emrin ose dyqanin tënd.'); return; }
+    const okEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    if(!okEmail){ fieldError(emailEl, 'Shkruaj një adresë email të vlefshme (p.sh. emri@shembull.com).'); return; }
 
     const btn = form.querySelector('button[type=submit]');
     const original = btn.textContent;
-    btn.disabled = true; btn.textContent = 'Duke u dërguar…';
+    submitting = true; btn.disabled = true; btn.textContent = 'Duke u dërguar…';
+
+    // redundant local backup so a sign-up is never lost client-side
+    const list = get();
+    if(!list.some(p=>p.email.toLowerCase() === email.toLowerCase())){
+      list.push({ name, email, date:new Date().toISOString() });
+      save(list);
+    }
 
     try{
-      if(FORMSPREE_ENDPOINT.includes('REPLACE_WITH_YOUR_ID')){
-        // Backend not configured yet — skip network, rely on local backup.
-        console.warn('GoMarket: set FORMSPREE_ENDPOINT to send sign-ups to your backend.');
-      } else {
-        const res = await fetch(FORMSPREE_ENDPOINT, {
-          method:'POST',
-          headers:{'Accept':'application/json'},
-          body:new FormData(form)
-        });
-        if(!res.ok) throw new Error('Network response was not ok');
+      if(ENDPOINT.includes('PASTE_YOUR_ENDPOINT_URL')){
+        // No backend wired yet — be honest, don't fake success.
+        console.warn('GoMarket: set ENDPOINT to your form URL to start receiving sign-ups.');
+        throw new Error('not-configured');
+      }
+      const res = await fetch(ENDPOINT, {
+        method:'POST',
+        headers:{ 'Accept':'application/json' },
+        body:new FormData(form)
+      });
+      if(!res.ok){
+        // surface Formspree's own validation message when present
+        let detail = '';
+        try{ const data = await res.json(); detail = (data.errors && data.errors[0] && data.errors[0].message) || ''; }catch(e){}
+        const e = new Error('bad-status'); e.detail = detail; throw e;
       }
       showSuccess();
     } catch(err){
-      // Submission failed — data is still safe in local backup.
-      console.error('GoMarket sign-up error:', err);
-      btn.disabled = false; btn.textContent = original;
-      alert('Diçka shkoi keq. Provo përsëri pas pak.');
+      submitting = false; btn.disabled = false; btn.textContent = original;
+      let msg;
+      if(err.message === 'not-configured'){
+        msg = 'Forma nuk është gati ende. Provo pak më vonë.';
+      } else if(err.detail){
+        msg = err.detail; // e.g. Formspree rejected the email
+      } else {
+        msg = 'Diçka shkoi keq gjatë dërgimit. Kontrollo lidhjen dhe provo përsëri.';
+      }
+      errEl.textContent = msg; errEl.hidden = false;
     }
   });
 
-  /* ---------- admin panel ---------- */
-  const modal = document.getElementById('adminModal');
-  function renderTable(){
-    const list = get();
-    const box = document.getElementById('adminTable');
-    if(!list.length){ box.innerHTML = '<div class="empty">Ende pa regjistrime. Do të shfaqen këtu ndërsa njerëzit bashkohen.</div>'; return; }
-    let rows = list.map((p,i)=>`<tr><td>${i+1}</td><td>${escapeHtml(p.name)}</td><td>${escapeHtml(p.email)}</td><td>${new Date(p.date).toLocaleString()}</td></tr>`).join('');
-    box.innerHTML = `<table><thead><tr><th>#</th><th>Emri / Dyqani</th><th>Email</th><th>Bashkuar</th></tr></thead><tbody>${rows}</tbody></table>`;
-  }
-  function escapeHtml(s){return s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
-
-  /* ---- OWNER-ONLY access ----
-     The sign-ups panel is hidden from visitors. To open it as the owner:
-       • add  #owner  to the page URL  (e.g.  index.html#owner), or
-       • press  Ctrl + Shift + O  (Cmd + Shift + O on Mac)
-     then enter the owner password below. CHANGE this to your own secret: */
-  const OWNER_PASS = 'gomarket2026';
-  function openAdmin(){
-    const pass = prompt('Fjalëkalimi i pronarit:');
-    if(pass === null) return;                 // cancelled
-    if(pass !== OWNER_PASS){ alert('Fjalëkalim i gabuar.'); return; }
-    renderTable(); renderCounts(); modal.classList.add('show');
-  }
-  if(location.hash === '#owner' || location.hash === '#admin'){ openAdmin(); }
-  window.addEventListener('keydown', e=>{
-    if((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'O' || e.key === 'o')){
-      e.preventDefault(); openAdmin();
+  /* ---------- mobile menu ---------- */
+  (function(){
+    const toggle = document.getElementById('navToggle');
+    const menu = document.getElementById('mobileMenu');
+    if(!toggle || !menu) return;
+    function setOpen(open){
+      menu.hidden = !open;
+      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      toggle.setAttribute('aria-label', open ? 'Mbyll menynë' : 'Hap menynë');
     }
-  });
-  document.getElementById('closeBtn').addEventListener('click',()=>modal.classList.remove('show'));
-  modal.addEventListener('click',e=>{ if(e.target===modal) modal.classList.remove('show'); });
-
-  document.getElementById('clearBtn').addEventListener('click',()=>{
-    if(confirm("Të fshihen të gjitha regjistrimet në këtë pajisje? Ky veprim s'mund të zhbëhet.")){ save([]); renderTable(); renderCounts(); }
-  });
-
-  document.getElementById('exportBtn').addEventListener('click',()=>{
-    const list = get();
-    if(!list.length){ alert('Ende pa regjistrime për të eksportuar.'); return; }
-    const header = 'Emri,Email,Bashkuar\n';
-    const body = list.map(p=>`"${p.name.replace(/"/g,'""')}","${p.email}","${new Date(p.date).toLocaleString()}"`).join('\n');
-    const blob = new Blob([header+body],{type:'text/csv'});
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url; a.download = 'gomarket-waitlist.csv'; a.click();
-    URL.revokeObjectURL(url);
-  });
+    toggle.addEventListener('click', ()=> setOpen(menu.hidden));
+    menu.querySelectorAll('a').forEach(a=>a.addEventListener('click', ()=> setOpen(false)));
+    document.addEventListener('keydown', e=>{
+      if(e.key === 'Escape' && !menu.hidden){ setOpen(false); toggle.focus(); }
+    });
+    document.addEventListener('click', e=>{
+      if(!menu.hidden && !menu.contains(e.target) && !toggle.contains(e.target)) setOpen(false);
+    });
+    window.addEventListener('resize', ()=>{ if(window.innerWidth > 760 && !menu.hidden) setOpen(false); });
+  })();
 
   document.getElementById('year').textContent = new Date().getFullYear();
-  renderCounts();
 </script>
 </body>
 </html>
